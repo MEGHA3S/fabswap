@@ -1,3 +1,4 @@
+import 'package:fabswap/variables/global_variable.dart';
 import 'package:flutter/material.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -36,21 +37,42 @@ class DrawerWidget extends StatelessWidget {
                             style: TextStyle(color: Colors.black, fontSize: 20),
                           ),
                         ),
-                       const Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Icon(Icons.flag)),
+                       // const Padding(
+                       //      padding: EdgeInsets.only(left: 10),
+                       //      child: Icon(Icons.flag)),
                       ],
                     ),
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      iconsList("All", "assets/images/menf.png"),
-                      iconsList("Women", "assets/images/womenf.png"),
-                      iconsList("Men", "assets/images/menf.png"),
-                      iconsList("Kids", "assets/images/kidsf.png"),
-                      iconsList("Beauty", "assets/images/beauty.png"),
-                      iconsList("Plus Size", "assets/images/plus.png"),
+                      InkWell(onTap: (){
+                        categorySelected = "A";
+                        feedPageStateKey.currentState!.refresh();
+                        Navigator.pop(context);
+                      } ,
+                          child: iconsList("All", "assets/images/menf.png")),
+                      InkWell(onTap: (){
+                        categorySelected = "F";
+                        feedPageStateKey.currentState!.refresh();
+                        Navigator.pop(context);
+                      },
+                          child: iconsList("Women", "assets/images/womenf.png")),
+                      InkWell(onTap: (){
+                        categorySelected = "M";
+                        feedPageStateKey.currentState!.refresh();
+                        Navigator.pop(context);
+                      },
+                          child: iconsList("Men", "assets/images/menf.png")),
+                      InkWell(
+                        onTap: (){
+                          categorySelected = "K";
+                          feedPageStateKey.currentState!.refresh();
+                          Navigator.pop(context);
+                        },
+                          child: iconsList("Kids", "assets/images/kidsf.png")),
+                      // iconsList("Beauty", "assets/images/beauty.png"),
+                      // iconsList("Plus Size", "assets/images/plus.png"),
                     ],
                   )
                 ],

@@ -1,11 +1,18 @@
+import 'package:fabswap/networking/web.dart';
+import 'package:fabswap/variables/global_variable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../controllers/show_snackbar.dart';
 
 class FeedListing extends StatelessWidget {
   const FeedListing({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final routes =
+        ModalRoute.of(context)?.settings.arguments as Map<String, String>;
+    final indexProfile = routes['indexProfile'];
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -27,7 +34,7 @@ class FeedListing extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 20),
                             child: InkWell(
                                 onTap: () {
-                                  Navigator.popAndPushNamed(context, '/feed');
+                                  Navigator.pop(context, '/feed');
                                 },
                                 child: const Icon(Icons.arrow_back_ios))),
                         const Padding(
@@ -60,7 +67,7 @@ class FeedListing extends StatelessWidget {
                   const Divider(
                     color: Colors.grey,
                   ),
-                  lowerData(context),
+                  lowerData(context, indexProfile!),
                 ],
               )
             ],
@@ -74,11 +81,11 @@ class FeedListing extends StatelessWidget {
           ),
           child: Row(
             children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 20),
+              Padding(
+                padding: const EdgeInsets.only(left: 20),
                 child: Text(
-                  "₹1,000",
-                  style: TextStyle(
+                  "₹${feedModel.response![int.parse(indexProfile)].dressPrice.toString()}",
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
@@ -93,10 +100,11 @@ class FeedListing extends StatelessWidget {
                     child: Center(
                       child: InkWell(
                         onTap: () {
-                          Navigator.popAndPushNamed(context, '/cart');
+                          functionUpdateCart(indexProfile);
+                          showSnackBar(context,"Item Added to Cart");
                         },
                         child: Padding(
-                          padding: const EdgeInsets.only(top:7),
+                          padding: const EdgeInsets.only(top: 7),
                           child: Column(
                             children: const [
                               Text(
@@ -149,7 +157,7 @@ class FeedListing extends StatelessWidget {
   }
 }
 
-Widget lowerData(context) {
+Widget lowerData(context, String indexProfile) {
   return Column(
     children: [
       Row(
@@ -158,8 +166,8 @@ Widget lowerData(context) {
             padding: const EdgeInsets.only(left: 5),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: const Image(
-                image: AssetImage("assets/images/face.png"),
+              child: Image(
+                image:  NetworkImage(userModel.response![int.parse(feedModel.response![int.parse(indexProfile)].userId.toString())].profileImg.toString()),
                 width: 50,
               ),
             ),
@@ -170,9 +178,10 @@ Widget lowerData(context) {
               onTap: () {
                 Navigator.popAndPushNamed(context, '/profile');
               },
-              child: const Text(
-                "username",
-                style: TextStyle(
+              child: Text(
+                feedModel.response![int.parse(indexProfile)].username
+                    .toString(),
+                style: const TextStyle(
                     color: Colors.black,
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
@@ -185,32 +194,32 @@ Widget lowerData(context) {
           ),
           const Padding(
             padding: EdgeInsets.only(left: 30, top: 10),
-            child: Icon(Icons.add_comment_outlined),
+            // child: Icon(Icons.add_comment_outlined),
           ),
         ],
       ),
       Padding(
         padding: const EdgeInsets.only(left: 60),
         child: Row(
-          children: const [
+          children: [
             Text(
-              "38 seconds ago",
-              style: TextStyle(color: Colors.grey, fontSize: 15),
+              feedModel.response![int.parse(indexProfile)].createdAt.toString().substring(0,10),
+              style: const TextStyle(color: Colors.grey, fontSize: 15),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 120, top: 10),
+              padding: const EdgeInsets.only(left: 120, top: 10),
               child: Text(
-                "70",
-                style: TextStyle(color: Colors.grey, fontSize: 15),
+                feedModel.response![int.parse(indexProfile)].likes.toString(),
+                style: const TextStyle(color: Colors.grey, fontSize: 15),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 40, top: 10),
-              child: Text(
-                "6",
-                style: TextStyle(color: Colors.grey, fontSize: 15),
-              ),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.only(left: 40, top: 10),
+            //   child: Text(
+            //
+            //     style: TextStyle(color: Colors.grey, fontSize: 15),
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -229,8 +238,13 @@ Widget lowerData(context) {
                   onTap: () {
                     Navigator.popAndPushNamed(context, '/picture');
                   },
-                  child: const Image(
-                      image: AssetImage("assets/images/feeddress.png"))),
+                  child: Image(
+                      width: 100,
+                      height: 100,
+                      image: NetworkImage(
+                        feedModel.response![int.parse(indexProfile)].image
+                            .toString(),
+                      ))),
             ),
           ),
         ],
@@ -238,10 +252,10 @@ Widget lowerData(context) {
       Padding(
         padding: const EdgeInsets.only(left: 60, top: 20),
         child: Row(
-          children: const [
+          children: [
             Text(
-              "H&M White Dress",
-              style: TextStyle(
+              feedModel.response![int.parse(indexProfile)].dressName.toString(),
+              style: const TextStyle(
                   color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
@@ -252,15 +266,16 @@ Widget lowerData(context) {
       Padding(
         padding: const EdgeInsets.only(left: 60, top: 20),
         child: Row(
-          children: const [
+          children: [
             Text(
-              "₹1,000",
-              style: TextStyle(
+              feedModel.response![int.parse(indexProfile)].dressPrice
+                  .toString(),
+              style: const TextStyle(
                   color: Colors.black,
                   fontSize: 15,
                   fontWeight: FontWeight.bold),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(left: 20),
               child: Text(
                 " | ",
@@ -271,10 +286,10 @@ Widget lowerData(context) {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 20),
+              padding: const EdgeInsets.only(left: 20),
               child: Text(
-                " Size : Xs ",
-                style: TextStyle(
+                " Size : ${feedModel.response![int.parse(indexProfile)].dressSize.toString()} ",
+                style: const TextStyle(
                   color: Colors.grey,
                   fontSize: 15,
                 ),
@@ -287,33 +302,35 @@ Widget lowerData(context) {
         padding: const EdgeInsets.only(top: 20, left: 60),
         child: Row(
           children: const [
-            Text(
-              "Description",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            )
+            // Text(
+            //   "Description",
+            //   style: TextStyle(
+            //       color: Colors.black,
+            //       fontSize: 20,
+            //       fontWeight: FontWeight.bold),
+            // )
           ],
         ),
       ),
-      lowerCategory("Category"),
-      lowerSize("Size"),
-      lowerColor("Colour")
+      lowerCategory(
+        feedModel.response![int.parse(indexProfile)].category.toString(),
+      ),
+      lowerSize("Size", indexProfile),
+      // lowerColor("Colour")
     ],
   );
 }
 
-Widget lowerCategory(String text) {
+Widget lowerCategory(String category) {
   return Column(
     children: [
       Row(
-        children: [
+        children: const [
           Padding(
-            padding: const EdgeInsets.only(top: 30, left: 60),
+            padding: EdgeInsets.only(top: 30, left: 60),
             child: Text(
-              text,
-              style: const TextStyle(color: Colors.grey, fontSize: 15),
+              "Category",
+              style: TextStyle(color: Colors.grey, fontSize: 15),
             ),
           ),
         ],
@@ -322,9 +339,27 @@ Widget lowerCategory(String text) {
         padding: const EdgeInsets.only(top: 10, left: 30),
         child: Row(
           children: [
-            lowerContainer("Women"),
-            lowerContainer("Dress"),
-            lowerContainer("White")
+            if (category == 'M')
+              Row(
+                children: [
+                  lowerContainer("Men"),
+                  lowerContainer("Casuals"),
+                ],
+              ),
+            if (category == 'F')
+              Row(
+                children: [
+                  lowerContainer("Women"),
+                  lowerContainer("Dresses"),
+                ],
+              ),
+            if (category == 'K')
+              Row(
+                children: [
+                  lowerContainer("Kids"),
+                  lowerContainer("Kids Wear"),
+                ],
+              ),
           ],
         ),
       )
@@ -353,7 +388,7 @@ Widget lowerContainer(String text) {
   );
 }
 
-Widget lowerSize(String text) {
+Widget lowerSize(String text, String indexProfile) {
   return Column(
     children: [
       Row(
@@ -380,53 +415,11 @@ Widget lowerSize(String text) {
                   color: const Color.fromARGB(100, 227, 191, 95),
                   borderRadius: BorderRadius.circular(0),
                 ),
-                child: const Center(
+                child: Center(
                   child: Text(
-                    "UK 30 ",
-                    style: TextStyle(
-                        color: Colors.red, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      )
-    ],
-  );
-}
-
-Widget lowerColor(String text) {
-  return Column(
-    children: [
-      Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 30, left: 60),
-            child: Text(
-              text,
-              style: const TextStyle(color: Colors.grey, fontSize: 15),
-            ),
-          ),
-        ],
-      ),
-      Padding(
-        padding: const EdgeInsets.only(top: 10, left: 30),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 30),
-              child: Container(
-                height: 30,
-                width: 70,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(100, 227, 191, 95),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                child: const Center(
-                  child: Text(
-                    "White",
-                    style: TextStyle(
+                    feedModel.response![int.parse(indexProfile)].dressSize
+                        .toString(),
+                    style: const TextStyle(
                         color: Colors.red, fontWeight: FontWeight.bold),
                   ),
                 ),

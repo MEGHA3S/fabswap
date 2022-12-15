@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'networking/web.dart';
 
 void main() {
+  functionFetchUser();
   runApp(const MyApp());
 }
 

@@ -32,6 +32,10 @@ class Response {
   String? dressPrice;
   String? likes;
   String? comments;
+  String? category;
+  int? userId;
+
+
 
   Response(
       {this.id,
@@ -43,7 +47,11 @@ class Response {
         this.dressSize,
         this.dressPrice,
         this.likes,
-        this.comments});
+        this.comments,
+      this.category,
+        this.userId,
+
+      });
 
   Response.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -56,6 +64,9 @@ class Response {
     dressPrice = json['dress_price'];
     likes = json['likes'];
     comments = json['comments'];
+    category = json['category'];
+    userId = json['userId'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -70,6 +81,9 @@ class Response {
     data['dress_price'] = dressPrice;
     data['likes'] = likes;
     data['comments'] = comments;
+    data['category'] = category;
+    data['userId'] = userId;
+
     return data;
   }
 }
