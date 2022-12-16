@@ -27,8 +27,7 @@ class CartPage extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 20),
                             child: InkWell(
                                 onTap: () {
-                                  Navigator.popAndPushNamed(
-                                      context, '/feedlist');
+                                  Navigator.pop(context);
                                 },
                                 child: const Icon(Icons.arrow_back_ios))),
                         const Padding(

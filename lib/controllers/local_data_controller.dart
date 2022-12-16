@@ -1,10 +1,15 @@
 
+import 'package:fabswap/variables/global_variable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void storeLocalEmail(String email)async{
+void fetchLocalId()async{
   final prefs = await SharedPreferences.getInstance();
-  prefs.setString('email', email);
+  print(prefs.getString('id').toString() + " uuhh");
+  if(prefs.containsKey('id')){
+    myId=prefs.getString('id')!;
+  }
 }
+
 
 
 

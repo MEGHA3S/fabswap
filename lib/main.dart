@@ -1,3 +1,4 @@
+import 'package:fabswap/controllers/local_data_controller.dart';
 import 'package:fabswap/pages/add.dart';
 import 'package:fabswap/pages/buy.dart';
 import 'package:fabswap/pages/cart.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'networking/web.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   functionFetchUser();
   runApp(const MyApp());
 }

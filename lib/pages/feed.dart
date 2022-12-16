@@ -87,24 +87,35 @@ class FeedPageState extends State<FeedPage> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 5),
-                              child: Container(
-                                height: 40,
-                                width: 180,
-                                decoration: BoxDecoration(
-                                  color: const Color.fromARGB(255, 220, 212, 195),
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 5),
-                                  child: Row(
-                                    children: const [
-                                      Icon(
-                                        Icons.youtube_searched_for,
-                                        color: Colors.black,
-                                      )
-                                    ],
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 50,
+                                    width: 180,
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromARGB(255, 220, 212, 195),
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    child:  TextField(
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(color: Colors.black,fontSize: 15),
+                                      decoration: InputDecoration(
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: const BorderSide(width: 2, color: Colors.white),
+                                            borderRadius: BorderRadius.circular(10),
+                                            // filled: true,
+                                            // fillColor: Colors.white,
+                                          ),
+                                          hintText: 'Search Profile',
+                                          hintStyle: const TextStyle(
+                                            //for changing label text color
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                          )),
+                                    ),
+
                                   ),
-                                ),
+                                ],
                               ),
                             ),
                             const Padding(
